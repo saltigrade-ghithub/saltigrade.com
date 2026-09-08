@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saltigrade</title>
+<meta name="description" content="Saltigrade — a private single-family office.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+  :root{
+    --paper:#f9f9fb; --ink:#060809; --muted:#57667f; --soft:#7f8ca1;
+    --rule:#d5d8e0; --card-border:#c3c8d2; --accent:#2d4f97; --accent-dark:#1e3a75;
+    --serif:'Instrument Serif',Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{color:var(--accent-dark)}
+  header{display:flex;justify-content:space-between;align-items:center;height:76px;padding:0 5vw;border-bottom:0.5px solid var(--rule)}
+  .wordmark{font-family:var(--serif);font-size:22px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink)}
+  header nav a{font-size:13px;color:var(--muted)}
+  main{flex:1;display:flex;align-items:center;justify-content:center;padding:56px 5vw}
+  .hero{display:flex;align-items:center;gap:96px;max-width:1120px;width:100%}
+  .intro{max-width:620px;display:flex;flex-direction:column;gap:28px}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent)}
+  h1{font-family:var(--serif);font-size:clamp(40px,5vw,60px);line-height:1.08;font-weight:400;text-wrap:balance}
+  .lede{font-size:17px;line-height:1.65;color:var(--muted);max-width:540px}
+  .quote{border-top:0.5px solid var(--rule);padding-top:24px;max-width:540px;display:flex;flex-direction:column;gap:8px}
+  .quote q{font-family:var(--serif);font-style:italic;font-size:21px;line-height:1.45;color:var(--muted);quotes:"\201C" "\201D"}
+  .quote span{font-size:13px;color:var(--soft)}
+  .card{width:372px;flex:none;background:#fff;border:0.5px solid var(--card-border);border-radius:12px;box-shadow:0 4px 6px -1px rgba(0,0,0,.10),0 2px 4px -2px rgba(0,0,0,.10);padding:32px;display:flex;flex-direction:column;gap:18px}
+  .card p{font-size:13px;color:var(--soft)}
+  .field{display:flex;flex-direction:column;gap:8px}
+  .field label{font-size:12px;font-weight:600;color:var(--muted)}
+  .field input{height:44px;border:1px solid var(--card-border);border-radius:8px;padding:0 14px;font-size:14px;color:var(--ink);background:var(--paper);font-family:inherit;width:100%;outline:none}
+  .field input:focus{border-color:var(--accent)}
+  .card.err .field input{border-color:#e24b4a}
+  .error{display:none;font-size:13px;line-height:1.5;color:#a32d2d}
+  .card.err .error{display:block}
+  button{height:44px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer}
+  button:hover{background:var(--accent-dark)}
+  .fine{font-size:12px;line-height:1.5;color:var(--soft);text-align:center}
+  footer{display:flex;justify-content:space-between;align-items:center;padding:26px 5vw;border-top:0.5px solid var(--rule);font-size:13px;color:var(--soft)}
+  footer a{color:var(--soft)}
+  @media(max-width:960px){
+    .hero{flex-direction:column;gap:48px;align-items:stretch}
+    .card{width:100%;max-width:420px;align-self:center}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wordmark">Saltigrade</div>
+  <nav><a href="privacy.html">Privacy</a></nav>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="intro">
+      <div class="eyebrow">A private family office</div>
+      <h1>Quiet stewardship</h1>
+      <p class="lede">Saltigrade is a single-family office</p>
+      <div class="quote">
+        <q>Creativity is intelligence having fun.</q>
+        <span>&mdash; unknown, widely misattributed to Albert Einstein</span>
+      </div>
+    </div>
+
+    <form class="card" id="gate" autocomplete="off">
+      <p>For members of the household.</p>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="name@saltigrade.com">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
+      </div>
+      <div class="error" id="error"></div>
+      <button type="submit">Sign in</button>
+      <div class="fine">Access is by invitation only. There are no public sign-ups.</div>
+    </form>
+  </div>
+</main>
+
+<footer>
+  <div>&copy; 2026 Saltigrade</div>
+  <div><a href="privacy.html">Privacy</a></div>
+</footer>
+
+<script>
+  const DIGEST = "__DIGEST__";
+  const form = document.getElementById("gate");
+  const errEl = document.getElementById("error");
+  async function sha256hex(s){
+    const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+    return Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2, "0")).join("");
+  }
+  function fail(msg){ errEl.textContent = msg; form.classList.add("err"); }
+  form.addEventListener("input", () => { form.classList.remove("err"); });
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const pass = document.getElementById("password").value;
+    if (!email || !pass) { fail("Enter your email and password first."); return; }
+    const digest = await sha256hex(email + ":" + pass);
+    if (digest === DIGEST) {
+      sessionStorage.setItem("sg-member", "1");
+      location.href = "members.html";
+    } else {
+      fail("That didn’t match. Access is by invitation.");
+    }
+  });
+</script>
+</body>
+</html>

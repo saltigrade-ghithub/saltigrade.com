@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Saltigrade — Members</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+  :root{
+    --paper:#f9f9fb; --ink:#060809; --muted:#57667f; --soft:#7f8ca1;
+    --rule:#d5d8e0; --accent:#2d4f97; --accent-dark:#1e3a75;
+    --serif:'Instrument Serif',Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column}
+  header{display:flex;justify-content:space-between;align-items:center;height:76px;padding:0 5vw;border-bottom:0.5px solid var(--rule)}
+  .wordmark{font-family:var(--serif);font-size:22px;letter-spacing:0.14em;text-transform:uppercase}
+  .signout{display:flex;align-items:center;gap:24px}
+  .signout span{font-size:13px;color:var(--soft)}
+  .signout a{font-size:13px;font-weight:600;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:9px 22px;text-decoration:none}
+  main{flex:1;display:flex;align-items:center;justify-content:center;padding:56px 5vw}
+  .panel{max-width:560px;display:flex;flex-direction:column;gap:20px;text-align:center;align-items:center}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent)}
+  h1{font-family:var(--serif);font-size:44px;font-weight:400}
+  .panel p{font-size:15px;line-height:1.65;color:var(--muted)}
+  footer{display:flex;justify-content:space-between;align-items:center;padding:26px 5vw;border-top:0.5px solid var(--rule);font-size:13px;color:var(--soft)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wordmark">Saltigrade</div>
+  <div class="signout"><span>Signed in</span><a href="#" id="signout">Sign out</a></div>
+</header>
+
+<main>
+  <div class="panel">
+    <div class="eyebrow">Members</div>
+    <h1>The household briefing</h1>
+    <p>Placeholder page &mdash; this is where the members area begins. The real briefing and records stay on office systems; nothing sensitive is published here.</p>
+  </div>
+</main>
+
+<footer>
+  <div>&copy; 2026 Saltigrade</div>
+  <div></div>
+</footer>
+
+<script>
+  if (sessionStorage.getItem("sg-member") !== "1") { location.replace("index.html"); }
+  document.getElementById("signout").addEventListener("click", (e) => {
+    e.preventDefault();
+    sessionStorage.removeItem("sg-member");
+    location.href = "index.html";
+  });
+</script>
+</body>
+</html>
